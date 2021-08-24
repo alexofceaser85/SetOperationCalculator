@@ -2,6 +2,7 @@ package edu.westga.cs3152.sets;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Iterator;
  */
 public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	
-	private List<E> theList;
+	private HashSet<E> theSet;
 	private int sortedSetSize;
 	
 	/**
@@ -33,7 +34,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 * this.sortedSetSize == 0;
 	 */
 	public SortedSet() {
-		this.theList = new ArrayList<E>();
+		this.theSet = new HashSet<E>();
 		this.sortedSetSize = 0;
 	}
 
@@ -54,11 +55,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		if (this.sortedSetSize == 0) {
-			return true;
-		}
-		
-		return false;
+		return (this.sortedSetSize == 0);
 	}
 
 	/*
@@ -69,7 +66,13 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean equals(Set<E> aSet) {
-		return false;
+		for (E element : aSet) {
+			if (!this.theSet.contains(element)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	/*
@@ -112,7 +115,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean contains(E el) {
-		return false;
+		return this.theSet.contains(el);
 	}
 
 	/*
@@ -123,7 +126,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	@Override
 	public boolean add(E el) {
 		this.sortedSetSize++;
-		return this.theList.add(el);
+		return this.theSet.add(el);
 	}
 
 	/*
@@ -133,7 +136,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean remove(E el) {
-		return false;
+		return this.theSet.remove(el);
 	}
 
 	/*
