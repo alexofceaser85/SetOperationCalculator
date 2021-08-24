@@ -1,5 +1,7 @@
 package edu.westga.cs3152.sets;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -18,10 +20,21 @@ import java.util.Iterator;
  * @param <E> type of set elements
  */
 public class SortedSet<E extends Comparable<E>> implements Set<E> {
+	
+	private List<E> theList;
+	private int sortedSetSize;
+	
 	/**
 	 * Instantiates a new MySet object.
+	 * 
+	 * @precondition none
+	 * @postcondition 
+	 * this.theList == new List();
+	 * this.sortedSetSize == 0;
 	 */
 	public SortedSet() {
+		this.theList = new ArrayList<E>();
+		this.sortedSetSize = 0;
 	}
 
 	/*
@@ -31,7 +44,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public int size() {
-		return 0;
+		return this.sortedSetSize;
 	}
 
 	/*
@@ -41,7 +54,11 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return true;
+		if (this.sortedSetSize == 0) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	/*
@@ -105,7 +122,8 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean add(E el) {
-		return false;
+		this.sortedSetSize++;
+		return this.theList.add(el);
 	}
 
 	/*
