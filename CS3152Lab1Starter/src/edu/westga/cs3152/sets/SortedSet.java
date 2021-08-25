@@ -22,7 +22,6 @@ import java.util.TreeSet;
 public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	
 	private TreeSet<E> theSet;
-	private int sortedSetSize;
 	
 	/**
 	 * Instantiates a new MySet object.
@@ -34,13 +33,8 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	public SortedSet() {
 		this.theSet = new TreeSet<E>();
-		this.sortedSetSize = 0;
 	}
 	
-	public TreeSet<E> getTheSet() {
-		return this.theSet;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -48,7 +42,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public int size() {
-		return this.sortedSetSize;
+		return this.theSet.size();
 	}
 
 	/*
@@ -58,7 +52,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return (this.sortedSetSize == 0);
+		return (this.size() == 0);
 	}
 	
 	/*
@@ -85,7 +79,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isSubsetOf(Set<E> aSet) {
-		return false;
+		Set<E> superSet = aSet;
+		HashSet<E> subSet = new HashSet<E>(this.theSet);
+		
+		if (this.calculateSizeDifferenceBetweenSortedSetAndAnotherSet(superSet) < 0) {
+			return false;
+		}
+
+		return this.checkAllElementsInSubSetAreInSuperSet(superSet, subSet);
 	}
 
 	/*
@@ -96,7 +97,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isProperSubsetOf(Set<E> aSet) {
-		return false;
+		Set<E> superSet = aSet;
+		HashSet<E> subSet = new HashSet<E>(this.theSet);
+		
+		if (this.calculateSizeDifferenceBetweenSortedSetAndAnotherSet(superSet) < 1) {
+			return false;
+		}
+		
+		return this.checkAllElementsInSubSetAreInSuperSet(superSet, subSet);
 	}
 
 	/*
@@ -107,9 +115,12 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isDisjoint(Set<E> aSet) {
-		return false;
+		Set<E> superSet = aSet;
+		HashSet<E> subSet = new HashSet<E>(this.theSet);
+		
+		return this.checkAllElementsInSubSetAreNotInSuperSet(superSet, subSet);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -127,7 +138,6 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean add(E el) {
-		this.sortedSetSize++;
 		return this.theSet.add(el);
 	}
 
@@ -196,10 +206,30 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 		return theSetString;
 	}
 	
-	private boolean checkIfSetSizesAreNotEqual(Set<E> aSet) {
-		return aSet.size() != this.size();
+	private boolean checkAllElementsInSubSetAreInSuperSet(Set<E> superSet, HashSet<E> subSet) {
+		for (E element : subSet) {
+			if (!superSet.remove(element)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
-
+	
+	private boolean checkAllElementsInSubSetAreNotInSuperSet(Set<E> superSet, HashSet<E> subSet) {
+		if (subSet.isEmpty()) {
+			return false;
+		}
+		
+		for (E element : subSet) {
+			if (superSet.remove(element)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	private boolean checkIfSetContentAreEqual(Set<E> aSet) {
 		HashSet<E> theSetContent = new HashSet<E>(this.theSet);
 		for (E element : aSet) {
@@ -209,5 +239,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 		}
 		
 		return true;
+	}
+	
+	private boolean checkIfSetSizesAreNotEqual(Set<E> aSet) {
+		return aSet.size() != this.size();
+	}
+
+	
+	private int calculateSizeDifferenceBetweenSortedSetAndAnotherSet(Set<E> theOtherSet) {
+		return theOtherSet.size() - this.theSet.size();
 	}
 }
