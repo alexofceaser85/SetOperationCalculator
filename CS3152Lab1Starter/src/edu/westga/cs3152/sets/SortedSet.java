@@ -2,6 +2,7 @@ package edu.westga.cs3152.sets;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * Class SortedSet
@@ -20,7 +21,7 @@ import java.util.Iterator;
  */
 public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	
-	private HashSet<E> theSet;
+	private TreeSet<E> theSet;
 	private int sortedSetSize;
 	
 	/**
@@ -32,8 +33,12 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 * this.sortedSetSize == 0;
 	 */
 	public SortedSet() {
-		this.theSet = new HashSet<E>();
+		this.theSet = new TreeSet<E>();
 		this.sortedSetSize = 0;
+	}
+	
+	public TreeSet<E> getTheSet() {
+		return this.theSet;
 	}
 
 	/*
@@ -55,7 +60,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	public boolean isEmpty() {
 		return (this.sortedSetSize == 0);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,13 +69,12 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean equals(Set<E> aSet) {
-		for (E element : aSet) {
-			if (!this.theSet.contains(element)) {
-				return false;
-			}
+		
+		if (this.checkIfSetSizesAreNotEqual(aSet)) {
+			return false;
 		}
 		
-		return true;
+		return this.checkIfSetContentAreEqual(aSet);
 	}
 
 	/*
@@ -177,7 +181,33 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		return null;
+		TreeSet<E> theSet = new TreeSet<E>(this.theSet);
+		return theSet.iterator();
 	}
 
+	@Override
+	public String toString() {
+		String theSetString = "";
+		
+		for (E element : this.theSet) {
+			theSetString += element.toString() + System.lineSeparator();
+		}
+		
+		return theSetString;
+	}
+	
+	private boolean checkIfSetSizesAreNotEqual(Set<E> aSet) {
+		return aSet.size() != this.size();
+	}
+
+	private boolean checkIfSetContentAreEqual(Set<E> aSet) {
+		HashSet<E> theSetContent = new HashSet<E>(this.theSet);
+		for (E element : aSet) {
+			if (!theSetContent.contains(element)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }
