@@ -26,12 +26,25 @@ class TestAdd {
 	}
 	
 	@Test
-	public void shouldAddManyItems() {
+	public void shouldAddManySortedItems() {
 		SortedSet<String> theSet = new SortedSet<String>();
 
 		assertTrue(theSet.add("a element"));
 		assertTrue(theSet.add("b element"));
 		assertTrue(theSet.add("c element"));
+		
+		assertEquals("a element" + System.lineSeparator()
+			+ "b element" + System.lineSeparator()
+			+ "c element" + System.lineSeparator(), theSet.toString());
+	}
+	
+	@Test
+	public void shouldAddManyUnsortedItems() {
+		SortedSet<String> theSet = new SortedSet<String>();
+
+		assertTrue(theSet.add("c element"));
+		assertTrue(theSet.add("b element"));
+		assertTrue(theSet.add("a element"));
 		
 		assertEquals("a element" + System.lineSeparator()
 			+ "b element" + System.lineSeparator()

@@ -12,7 +12,9 @@ package edu.westga.cs3152.sets;
  * @version Fall 2021
  * @param <E> type of set elements
  */
-public interface Set<E> extends Iterable<E> {
+public interface Set<E extends Comparable<E>> extends Iterable<E> {
+	
+	public DLL<E> getTheSet();
 	/**
 	 * Returns the number of elements in this set.
 	 * 
