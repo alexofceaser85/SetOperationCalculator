@@ -57,6 +57,117 @@ class TestUnion {
 	}
 	
 	@Test
+	public void shouldFindUnionForTwoStringsWithManyVeryDifferentItemsWithSortedSetHavingLowerItems() {
+		SortedSet<String> theFirstSortedSet = new SortedSet<String>();
+		theFirstSortedSet.add("a");
+		theFirstSortedSet.add("b");
+		theFirstSortedSet.add("c");
+		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
+		theSecondSortedSet.add("y");
+		theSecondSortedSet.add("x");
+		theSecondSortedSet.add("z");
+		
+		Set<String> theUnionSet = theFirstSortedSet.union(theSecondSortedSet);
+		
+		assertEquals("a" + System.lineSeparator()
+			+ "b" + System.lineSeparator()
+			+ "c" + System.lineSeparator()
+			+ "x" + System.lineSeparator()
+			+ "y" + System.lineSeparator()
+			+ "z" + System.lineSeparator(), theUnionSet.toString());
+	}
+	
+	@Test
+	public void shouldFindUnionForTwoStringsWithManyVeryDifferentItemsWithSortedSetHavingHigherItems() {
+		SortedSet<String> theFirstSortedSet = new SortedSet<String>();
+		theFirstSortedSet.add("y");
+		theFirstSortedSet.add("x");
+		theFirstSortedSet.add("z");
+		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
+		theSecondSortedSet.add("a");
+		theSecondSortedSet.add("b");
+		theSecondSortedSet.add("c");
+		
+		Set<String> theUnionSet = theFirstSortedSet.union(theSecondSortedSet);
+		
+		assertEquals("a" + System.lineSeparator()
+			+ "b" + System.lineSeparator()
+			+ "c" + System.lineSeparator()
+			+ "x" + System.lineSeparator()
+			+ "y" + System.lineSeparator()
+			+ "z" + System.lineSeparator(), theUnionSet.toString());
+	}
+	
+	@Test
+	public void shouldFindUnionForTwoStringsWithManyVeryDifferentItemsWithSetsHavingVariedItems() {
+		SortedSet<String> theFirstSortedSet = new SortedSet<String>();
+		theFirstSortedSet.add("a");
+		theFirstSortedSet.add("d");
+		theFirstSortedSet.add("e");
+		theFirstSortedSet.add("i");
+		theFirstSortedSet.add("n");
+		theFirstSortedSet.add("o");
+		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
+		theSecondSortedSet.add("p");
+		theSecondSortedSet.add("c");
+		theSecondSortedSet.add("j");
+		theSecondSortedSet.add("l");
+		theSecondSortedSet.add("q");
+		theSecondSortedSet.add("r");
+		
+		Set<String> theUnionSet = theFirstSortedSet.union(theSecondSortedSet);
+		
+		assertEquals("a" + System.lineSeparator()
+			+ "c" + System.lineSeparator()
+			+ "d" + System.lineSeparator()
+			+ "e" + System.lineSeparator()
+			+ "i" + System.lineSeparator()
+			+ "j" + System.lineSeparator()
+			+ "l" + System.lineSeparator()
+			+ "n" + System.lineSeparator()
+			+ "o" + System.lineSeparator()
+			+ "p" + System.lineSeparator()
+			+ "q" + System.lineSeparator()
+			+ "r" + System.lineSeparator(), theUnionSet.toString());
+	}
+	
+	@Test
+	public void shouldFindUnionForTwoStringsWithManyVeryDifferentItemsWithSetsHavingVariedItemsWithoutDuplicates() {
+		SortedSet<String> theFirstSortedSet = new SortedSet<String>();
+		theFirstSortedSet.add("a");
+		theFirstSortedSet.add("p");
+		theFirstSortedSet.add("d");
+		theFirstSortedSet.add("e");
+		theFirstSortedSet.add("i");
+		theFirstSortedSet.add("n");
+		theFirstSortedSet.add("o");
+		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
+		theFirstSortedSet.add("i");
+		theSecondSortedSet.add("p");
+		theSecondSortedSet.add("c");
+		theSecondSortedSet.add("j");
+		theSecondSortedSet.add("l");
+		theFirstSortedSet.add("a");
+		theSecondSortedSet.add("q");
+		theSecondSortedSet.add("r");
+		
+		Set<String> theUnionSet = theFirstSortedSet.union(theSecondSortedSet);
+		
+		assertEquals("a" + System.lineSeparator()
+			+ "c" + System.lineSeparator()
+			+ "d" + System.lineSeparator()
+			+ "e" + System.lineSeparator()
+			+ "i" + System.lineSeparator()
+			+ "j" + System.lineSeparator()
+			+ "l" + System.lineSeparator()
+			+ "n" + System.lineSeparator()
+			+ "o" + System.lineSeparator()
+			+ "p" + System.lineSeparator()
+			+ "q" + System.lineSeparator()
+			+ "r" + System.lineSeparator(), theUnionSet.toString());
+	}
+	
+	@Test
 	public void shouldFindUnionOfTwoIdenticalSetsWithManyItems() {
 		SortedSet<Integer> theFirstSortedSet = new SortedSet<Integer>();
 		theFirstSortedSet.add(1);

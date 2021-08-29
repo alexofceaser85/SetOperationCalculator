@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
+import edu.westga.cs3152.sets.setoperations.UnionOperations;
+
 /**
  * Class SortedSet
  * 
@@ -189,91 +191,73 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 			return new SortedSet<E>();
 		}
 		
-		return this.calculateUnionOfSets(aSet, theUnionSet);
+		return this.calculateUnionOfSets(aSet, this);
 	}
 
 	private Set<E> calculateUnionOfSets(Set<E> aSet, SortedSet<E> theUnionSet) {
-		Iterator<E> firstSetIterator = this.theSortedSet.iterator();
-		Iterator<E> secondSetIterator = aSet.getTheSet().iterator();
-
-		E firstSetElement = firstSetIterator.next();
-		E secondSetElement = secondSetIterator.next();
-
-		boolean firstSetHasNextElement = true;
-		boolean secondSetHasNextElement = true;
+		UnionOperations<E> theUnionOperations = new UnionOperations<E>(aSet, theUnionSet, new SortedSet<E>());
+		return theUnionOperations.getUnion();
 		
-		HashSet<E> valuesUsed = new HashSet<E>();
-		
-		while (firstSetHasNextElement || secondSetHasNextElement) {
-
-			if (firstSetElement.compareTo(secondSetElement) < 0) {
-				this.addFirstSetElementToUnionSet(theUnionSet, firstSetElement, valuesUsed);
-				if (firstSetIterator.hasNext()) {
-					firstSetElement = firstSetIterator.next();
-				} else if (secondSetIterator.hasNext()) {
-					theUnionSet.add(secondSetElement);
-					firstSetHasNextElement = false;
-					secondSetHasNextElement = false;
-					
-					this.populateSecondSetOnceFirstSetIsIteratedThrough(theUnionSet, secondSetIterator, valuesUsed);
-				} else {
-					theUnionSet.add(secondSetElement);
-					firstSetHasNextElement = false;
-					secondSetHasNextElement = false;
-				}
-			} else if (firstSetElement.compareTo(secondSetElement) == 0) {
-				this.addFirstSetElementToUnionSet(theUnionSet, secondSetElement, valuesUsed);
-				if (firstSetIterator.hasNext()) {
-					firstSetElement = firstSetIterator.next();
-				} else {
-					firstSetHasNextElement = false;
-				}
-				if (secondSetIterator.hasNext()) {
-					secondSetElement = secondSetIterator.next();
-				} else {
-					secondSetHasNextElement = false;
-				}
-			} else {
-				this.addFirstSetElementToUnionSet(theUnionSet, secondSetElement, valuesUsed);
-				
-				if (secondSetIterator.hasNext()) {
-					secondSetElement = secondSetIterator.next();
-				} else if (firstSetIterator.hasNext()) {
-					this.addFirstSetElementToUnionSet(theUnionSet, firstSetElement, valuesUsed);
-					secondSetHasNextElement = false;
-					firstSetHasNextElement = false;
-					
-					this.populateFirstSetOnceSecondSetIsIteratedThrough(theUnionSet, firstSetIterator);
-				} else {
-					this.addFirstSetElementToUnionSet(theUnionSet, firstSetElement, valuesUsed);
-					firstSetHasNextElement = false;
-					secondSetHasNextElement = false;
-				}
-			} 
-		}
-
-		return theUnionSet;
-	}
-
-	private void populateFirstSetOnceSecondSetIsIteratedThrough(SortedSet<E> theUnionSet,
-			Iterator<E> firstSetIterator) {
-		while (firstSetIterator.hasNext()) {
-			theUnionSet.add(firstSetIterator.next());
-		}
-	}
-
-	private void populateSecondSetOnceFirstSetIsIteratedThrough(SortedSet<E> theUnionSet, Iterator<E> secondSetIterator,
-			HashSet<E> valuesUsed) {
-		while (secondSetIterator.hasNext()) {
-			E nextElementFromSecondSetIterator = secondSetIterator.next();
-			this.addSecondSetElementToUnionSet(theUnionSet, nextElementFromSecondSetIterator, valuesUsed);
-		}
-	}
-
-	private void addFirstSetElementToUnionSet(SortedSet<E> theUnionSet, E firstSetElement, HashSet<E> valuesUsed) {
-		if (valuesUsed.add(firstSetElement)) {
-			theUnionSet.add(firstSetElement);
-		}
+//		Iterator<E> firstSetIterator = this.theSortedSet.iterator();
+//		Iterator<E> secondSetIterator = aSet.getTheSet().iterator();
+//
+//		E firstSetElement = firstSetIterator.next();
+//		E secondSetElement = secondSetIterator.next();
+//
+//		boolean firstSetHasNextElement = true;
+//		boolean secondSetHasNextElement = true;
+//		
+//		HashSet<E> valuesUsed = new HashSet<E>();
+//		
+//		while (firstSetHasNextElement || secondSetHasNextElement) {
+//
+//			if (firstSetElement.compareTo(secondSetElement) < 0) {
+//				this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
+//				if (firstSetIterator.hasNext()) {
+//					firstSetElement = firstSetIterator.next();
+//				} else if (secondSetIterator.hasNext()) {
+//					theUnionSet.add(secondSetElement);
+//					firstSetHasNextElement = false;
+//					secondSetHasNextElement = false;
+//					
+//					this.populateSecondSetOnceFirstSetIsIteratedThrough(theUnionSet, secondSetIterator, valuesUsed);
+//				} else {
+//					theUnionSet.add(secondSetElement);
+//					firstSetHasNextElement = false;
+//					secondSetHasNextElement = false;
+//				}
+//			} else if (firstSetElement.compareTo(secondSetElement) == 0) {
+//				this.addSetElementToValuesUsed(theUnionSet, secondSetElement, valuesUsed);
+//				if (firstSetIterator.hasNext()) {
+//					firstSetElement = firstSetIterator.next();
+//				} else {
+//					firstSetHasNextElement = false;
+//				}
+//				if (secondSetIterator.hasNext()) {
+//					secondSetElement = secondSetIterator.next();
+//				} else {
+//					secondSetHasNextElement = false;
+//				}
+//			} else {
+//				this.addSetElementToValuesUsed(theUnionSet, secondSetElement, valuesUsed);
+//				
+//				if (secondSetIterator.hasNext()) {
+//					secondSetElement = secondSetIterator.next();
+//				} else if (firstSetIterator.hasNext()) {
+//					this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
+//					secondSetHasNextElement = false;
+//					firstSetHasNextElement = false;
+//					
+//					this.populateFirstSetOnceSecondSetIsIteratedThrough(theUnionSet, firstSetIterator);
+//				} else {
+//					this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
+//					firstSetHasNextElement = false;
+//					secondSetHasNextElement = false;
+//				}
+//			} 
+//		}
+//
+//		return theUnionSet;
 	}
 
 	private void addSecondSetElementToUnionSet(SortedSet<E> theUnionSet, E secondSetElement, HashSet<E> valuesUsed) {
@@ -311,8 +295,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		TreeSet<E> theSet = new TreeSet<E>(this.theUnsortedSet);
-		return theSet.iterator();
+		return this.theSortedSet.iterator();
 	}
 
 	@Override
