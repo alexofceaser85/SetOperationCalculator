@@ -1,8 +1,6 @@
 package edu.westga.cs3152.sets.dll;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.NoSuchElementException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
