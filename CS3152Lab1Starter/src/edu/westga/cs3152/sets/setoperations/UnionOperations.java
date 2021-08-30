@@ -83,7 +83,6 @@ public class UnionOperations<E extends Comparable<E>> {
 	 */
 	public SortedSet<E> getUnion() {
 		while (this.givenSetHasNextElement || this.sortedSetHasNextElement) {
-			System.out.println(this.sortedSetElement + "  " + this.givenSetElement);
 			if (this.sortedSetElement.compareTo(this.givenSetElement) < 0) {
 				this.addToUnionSetIfSortedSetElementIsLessThanUnsortedSetElement();
 			} else if (this.sortedSetElement.compareTo(this.givenSetElement) == 0) {

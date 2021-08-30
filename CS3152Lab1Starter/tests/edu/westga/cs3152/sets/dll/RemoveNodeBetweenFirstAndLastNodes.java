@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import edu.westga.cs3152.sets.DLL;
 
-class TestInsertAtIndex {
-
+class RemoveNodeBetweenFirstAndLastNodes {
+	
 	@Test
-	public void shouldNotAddNodeIfListHasNoHeadNode() {
+	public void shouldNotRemoveNodeIfListHasNoHeadNode() {
 		DLL<String> list = new DLL<String>();
 		assertThrows(NoSuchElementException.class, () -> {
 			list.insertNodeBetweenFirstAndLastNodes("a");
@@ -20,23 +20,27 @@ class TestInsertAtIndex {
 	}
 	
 	@Test
-	public void shouldNotAddNodeIfListHasNodeTailNode() {
+	public void shouldNotRemoveNodeIfListHasNodeTailNode() {
 		DLL<String> list = new DLL<String>();
 		list.addFirst("a");
 		assertThrows(IllegalArgumentException.class, () -> {
-			list.insertNodeBetweenFirstAndLastNodes("b");
+			list.removeNodeBetweenFirstAndLastNodes("b");
 		});
 	}
 	
 	@Test
-	public void shouldAddNodeIfNodeBelongsAtMiddleOfTheList() {
+	public void shouldRemoveNodeIfNodeBelongsAtMiddleOfTheList() {
 		DLL<String> list = new DLL<String>();
 		list.addFirst("a");
+		list.addLast("b");
 		list.addLast("c");
-		list.insertNodeBetweenFirstAndLastNodes("b");
 		Iterator<String> iterator = list.iterator();
 		assertEquals("a", iterator.next());
 		assertEquals("b", iterator.next());
+		assertEquals("c", iterator.next());
+		assertEquals("b", list.removeNodeBetweenFirstAndLastNodes("b"));
+		iterator = list.iterator();
+		assertEquals("a", iterator.next());
 		assertEquals("c", iterator.next());
 		assertFalse(iterator.hasNext());
 	}
@@ -46,37 +50,42 @@ class TestInsertAtIndex {
 		DLL<String> list = new DLL<String>();
 		list.addFirst("a");
 		list.addLast("b");
+		list.addLast("c");
 		list.addLast("d");
 		list.addLast("e");
-		list.insertNodeBetweenFirstAndLastNodes("c");
 		Iterator<String> iterator = list.iterator();
 		assertEquals("a", iterator.next());
 		assertEquals("b", iterator.next());
 		assertEquals("c", iterator.next());
 		assertEquals("d", iterator.next());
 		assertEquals("e", iterator.next());
+		list.removeNodeBetweenFirstAndLastNodes("c");
+		iterator = list.iterator();
+		assertEquals("a", iterator.next());
+		assertEquals("b", iterator.next());
+		assertEquals("d", iterator.next());
+		assertEquals("e", iterator.next());
 		assertFalse(iterator.hasNext());
 	}
-
+	
 	@Test
-	public void shouldNotAddNodeIfNodeBelongsAtHeadOfTheList() {
+	public void shouldNotRemoveNodeIfNodeBelongsAtHeadOfTheList() {
 		DLL<String> list = new DLL<String>();
 		list.addFirst("b");
 		list.addLast("c");
 		
 		assertThrows(IllegalArgumentException.class, () -> {
-			list.insertNodeBetweenFirstAndLastNodes("a");
+			list.removeNodeBetweenFirstAndLastNodes("a");
 		});
 	}
 	
 	@Test
-	public void shouldNotAddNodeIfNodeBelongsAtEndOfTheList() {
+	public void shouldNotRemoveNodeIfNodeBelongsAtEndOfTheList() {
 		DLL<String> list = new DLL<String>();
 		list.addFirst("a");
 		list.addLast("b");
 		assertThrows(IllegalArgumentException.class, () -> {
-			list.insertNodeBetweenFirstAndLastNodes("c");
+			list.removeNodeBetweenFirstAndLastNodes("c");
 		});
 	}
-
 }

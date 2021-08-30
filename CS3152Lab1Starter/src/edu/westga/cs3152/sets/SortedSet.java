@@ -170,6 +170,22 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean remove(E el) {
+		int sortedSetSize = this.theSortedSet.size();
+		if (sortedSetSize == 0) {
+			return false;
+		}
+		
+		if (this.theSortedSet.getLast().compareTo(el) < 0 || this.theSortedSet.getFirst().compareTo(el) > 0) {
+			return false;
+		} else if (this.theSortedSet.getLast().compareTo(el) == 0) {
+			this.theSortedSet.removeLast();
+			return true;
+		} else if (this.theSortedSet.getFirst().compareTo(el) == 0) {
+			this.theSortedSet.removeFirst();
+			return true;
+		}
+		
+		this.theSortedSet.removeNodeBetweenFirstAndLastNodes(el);
 		return this.theUnsortedSet.remove(el);
 	}
 

@@ -1,9 +1,10 @@
 package edu.westga.cs3152.sets;
 
 import java.util.Iterator;
+
 import java.util.NoSuchElementException;
 
-import edu.westga.cs3152.sets.errormessages.DLLErrorMessages;
+import edu.westga.cs3152.errormessages.DLLErrorMessages;
 
 /**
  * Class DLL Implements a doubly-linked list
@@ -66,8 +67,8 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 	/**
 	 * Adds a node at an index
 	 * 
-	 * @precondition none
-	 * @postcondition none
+	 * @precondition valueToReplaceWith < this.getFirst() && valueToReplaceWith > this.getLast()
+	 * @postcondition this.size() == this.size()@prev + 1
 	 * 
 	 * @param valueToReplaceWith the value to replace the current index with
 	 * 
@@ -153,6 +154,70 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 		}
 		return this.tail.prev.value;
 	}
+	
+	/**
+	 * Removes a node between the first and last nodes
+	 * 
+	 * @precondition valueToRemove < this.getFirst() && valueToRemove > this.getLast()
+	 * @postcondition this.size() == this.size()@prev - 1
+	 * 
+	 * @param valueToRemove the value to remove
+	 * 
+	 * @return valueToRemove the values that was removed if the value can be removed, null if the value cannot be removed 
+	 */
+	public E removeNodeBetweenFirstAndLastNodes(E valueToRemove) {
+		if (valueToRemove.compareTo(this.getFirst()) < 0) {
+			throw new IllegalArgumentException(DLLErrorMessages.CANNOT_REMOVE_NODE_BETWEEN_FIRST_AND_LAST_NODES_IF_NODE_IS_LESS_THAN_FIRST_NODE);
+		}
+		if (valueToRemove.compareTo(this.getLast()) > 0) {
+			throw new IllegalArgumentException(DLLErrorMessages.CANNOT_REMOVE_NODE_BETWEEN_FIRST_AND_LAST_NODES_IF_NODE_IS_MORE_THAN_LAST_NODE);
+		}
+		
+		ListIterator theIterator = new ListIterator();
+		while (theIterator.hasNext()) {
+			theIterator.next();
+
+			if (theIterator.getCurrent() != null && theIterator.getCurrent().value != null) {
+
+				if (theIterator.getCurrent().value.compareTo(valueToRemove) == 0) {
+					theIterator.getCurrent().remove();
+					return valueToRemove;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Removes and returns the first value in the list
+	 *
+	 * @return the value at the head of the list
+	 * @exception NoSuchElementException if this list is empty
+	 */
+	public E removeFirst() {
+		if (this.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		E value = this.head.value;
+		this.head.remove();
+		return value;
+	}
+	
+	/**
+	 * Removes and returns the last value in the list
+	 *
+	 * @return the value at the tail of the list
+	 * @exception NoSuchElementException no matching value
+	 */
+	public E removeLast() {
+		if (this.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		E value = this.tail.prev.value;
+		this.tail.prev.remove();
+		return value;
+	}
 
 	private class ListIterator implements Iterator<E> {
 		private Node current = DLL.this.head;
@@ -165,7 +230,6 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 		@Override
 		public E next() {
 			E value = this.current.value;
-			System.out.println(this.current.value);
 			this.current = this.current.next;
 			return value;
 		}
@@ -213,6 +277,23 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 				DLL.this.head = newNode;
 			}
 			return newNode;
+		}
+		
+		/**
+		 * Removes a node from the sequence
+		 */
+		private void remove() {
+			if (this.next == null) {
+				throw new NoSuchElementException();
+			}
+			DLL.this.size--;
+
+			this.next.prev = this.prev;
+			if (this.prev != null) {
+				this.prev.next = this.next;
+			} else {
+				DLL.this.head = this.next;
+			}
 		}
 	}
 }
