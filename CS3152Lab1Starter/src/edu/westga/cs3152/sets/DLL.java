@@ -103,7 +103,7 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 	 * Adds a new value at the head of the list
 	 *
 	 * @precondition none
-	 * @postcondition this.head.value == value
+	 * @postcondition this.head.value == value && this.size() == this.size()@prev + 1
 	 *
 	 * @param value element to be inserted into the list
 	 */
@@ -115,7 +115,7 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 	 * Adds a new value at the tail of the list
 	 * 
 	 * @precondition none
-	 * @postcondition this.tail.value == value
+	 * @postcondition this.tail.value == value && this.size() == this.size()@prev + 1
 	 *
 	 * @param value the value to be inserted into the list
 	 */
@@ -192,6 +192,9 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 	/**
 	 * Removes and returns the first value in the list
 	 *
+	 * @precondition none
+	 * @postcondition this.size() == this.size()@prev - 1 && this.head.value != this.head.value@prev
+	 *
 	 * @return the value at the head of the list
 	 * @exception NoSuchElementException if this list is empty
 	 */
@@ -206,6 +209,9 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 	
 	/**
 	 * Removes and returns the last value in the list
+	 *
+	 * @precondition none
+	 * @postcondition this.size() == this.size()@prev - 1 && this.tail.value != this.tail.value@prev
 	 *
 	 * @return the value at the tail of the list
 	 * @exception NoSuchElementException no matching value
@@ -250,9 +256,9 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 		private Node prev;
 
 		/**
-		 * Instantiates a new node
+		 * Instantiates a new node of the doubly linked list
 		 *
-		 * @param value the value of the new node
+		 * @param value the value of the new node of the doubly linked list
 		 */
 		Node(E value) {
 			this.value = value;
@@ -261,9 +267,9 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 		}
 
 		/**
-		 * Inserts a new node into the sequence
+		 * Inserts a new node into the doubly linked list
 		 *
-		 * @param value value held by new node
+		 * @param value value of the inserted node
 		 */
 		private Node insert(E value) {
 			DLL.this.size++;
@@ -280,7 +286,7 @@ public class DLL<E extends Comparable<E>> implements Iterable<E> {
 		}
 		
 		/**
-		 * Removes a node from the sequence
+		 * Removes a node from the doubly linked list
 		 */
 		private void remove() {
 			if (this.next == null) {
