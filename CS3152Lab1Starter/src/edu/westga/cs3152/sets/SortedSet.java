@@ -27,10 +27,6 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	private HashSet<E> theUnsortedSet;
 	private DLL<E> theSortedSet;
 	
-	public DLL<E> getTheSet() {
-		return this.theSortedSet;
-	}
-	
 	/**
 	 * Instantiates a new MySet object.
 	 * 
@@ -162,8 +158,8 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 			this.theSortedSet.addFirst(el);
 			return this.theUnsortedSet.add(el);
 		}
-
-		this.theSortedSet.insertNodeAtIndex(el);
+		
+		this.theSortedSet.insertNodeBetweenFirstAndLastNodes(el);
 		return this.theUnsortedSet.add(el);
 	}
 
@@ -185,87 +181,15 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> union(Set<E> aSet) {
-		SortedSet<E> theUnionSet = new SortedSet<E>();
-		
-		if (aSet.isEmpty() && theUnionSet.isEmpty()) {
+		if (aSet.isEmpty()) {
 			return new SortedSet<E>();
 		}
 		
-		return this.calculateUnionOfSets(aSet, this);
-	}
-
-	private Set<E> calculateUnionOfSets(Set<E> aSet, SortedSet<E> theUnionSet) {
-		UnionOperations<E> theUnionOperations = new UnionOperations<E>(aSet, theUnionSet, new SortedSet<E>());
+		SortedSet<E> theUnionSet = new SortedSet<E>();
+		UnionOperations<E> theUnionOperations = new UnionOperations<E>(aSet, this, theUnionSet);
 		return theUnionOperations.getUnion();
-		
-//		Iterator<E> firstSetIterator = this.theSortedSet.iterator();
-//		Iterator<E> secondSetIterator = aSet.getTheSet().iterator();
-//
-//		E firstSetElement = firstSetIterator.next();
-//		E secondSetElement = secondSetIterator.next();
-//
-//		boolean firstSetHasNextElement = true;
-//		boolean secondSetHasNextElement = true;
-//		
-//		HashSet<E> valuesUsed = new HashSet<E>();
-//		
-//		while (firstSetHasNextElement || secondSetHasNextElement) {
-//
-//			if (firstSetElement.compareTo(secondSetElement) < 0) {
-//				this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
-//				if (firstSetIterator.hasNext()) {
-//					firstSetElement = firstSetIterator.next();
-//				} else if (secondSetIterator.hasNext()) {
-//					theUnionSet.add(secondSetElement);
-//					firstSetHasNextElement = false;
-//					secondSetHasNextElement = false;
-//					
-//					this.populateSecondSetOnceFirstSetIsIteratedThrough(theUnionSet, secondSetIterator, valuesUsed);
-//				} else {
-//					theUnionSet.add(secondSetElement);
-//					firstSetHasNextElement = false;
-//					secondSetHasNextElement = false;
-//				}
-//			} else if (firstSetElement.compareTo(secondSetElement) == 0) {
-//				this.addSetElementToValuesUsed(theUnionSet, secondSetElement, valuesUsed);
-//				if (firstSetIterator.hasNext()) {
-//					firstSetElement = firstSetIterator.next();
-//				} else {
-//					firstSetHasNextElement = false;
-//				}
-//				if (secondSetIterator.hasNext()) {
-//					secondSetElement = secondSetIterator.next();
-//				} else {
-//					secondSetHasNextElement = false;
-//				}
-//			} else {
-//				this.addSetElementToValuesUsed(theUnionSet, secondSetElement, valuesUsed);
-//				
-//				if (secondSetIterator.hasNext()) {
-//					secondSetElement = secondSetIterator.next();
-//				} else if (firstSetIterator.hasNext()) {
-//					this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
-//					secondSetHasNextElement = false;
-//					firstSetHasNextElement = false;
-//					
-//					this.populateFirstSetOnceSecondSetIsIteratedThrough(theUnionSet, firstSetIterator);
-//				} else {
-//					this.addSetElementToValuesUsed(theUnionSet, firstSetElement, valuesUsed);
-//					firstSetHasNextElement = false;
-//					secondSetHasNextElement = false;
-//				}
-//			} 
-//		}
-//
-//		return theUnionSet;
 	}
 
-	private void addSecondSetElementToUnionSet(SortedSet<E> theUnionSet, E secondSetElement, HashSet<E> valuesUsed) {
-		if (valuesUsed.add(secondSetElement)) {
-			theUnionSet.add(secondSetElement);
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -274,7 +198,17 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> intersection(Set<E> aSet) {
-		return null;
+		SortedSet<E> theIntersectionSet = new SortedSet<E>();
+
+		Iterator<E> setIterator = aSet.iterator();
+		while (setIterator.hasNext()) {
+			E element = setIterator.next();
+			if (this.theUnsortedSet.contains(element)) {
+				theIntersectionSet.add(element);
+			}
+		}
+		
+		return theIntersectionSet;
 	}
 
 	/*
@@ -285,7 +219,17 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> difference(Set<E> aSet) {
-		return null;
+		SortedSet<E> theDifferenceSet = new SortedSet<E>();
+
+		Iterator<E> setIterator = this.theSortedSet.iterator();
+		while (setIterator.hasNext()) {
+			E element = setIterator.next();
+			if (!aSet.contains(element)) {
+				theDifferenceSet.add(element);
+			}
+		}
+		
+		return theDifferenceSet;
 	}
 
 	/*

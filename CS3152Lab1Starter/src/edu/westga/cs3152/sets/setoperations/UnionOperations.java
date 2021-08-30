@@ -15,17 +15,17 @@ import edu.westga.cs3152.sets.SortedSet;
  */
 public class UnionOperations<E extends Comparable<E>> {
 	
-	private Set<E> theUnsortedSet;
+	private Set<E> theGivenSet;
 	private SortedSet<E> theUnionSet;
 	private SortedSet<E> theSortedSet;
 	
-	private Iterator<E> unsortedSetIterator;
+	private Iterator<E> givenSetIterator;
 	private Iterator<E> sortedSetIterator;
 	
-	private E unsortedSetElement;
+	private E givenSetElement;
 	private E sortedSetElement;
 	
-	private boolean unsortedSetHasNextElement;
+	private boolean givenSetHasNextElement;
 	private boolean sortedSetHasNextElement;
 	
 	private HashSet<E> valuesUsed;
@@ -36,30 +36,45 @@ public class UnionOperations<E extends Comparable<E>> {
 	 * @precondition 
 	 * 	theUnsortedSet != null
 	 *  theSortedSet != null
-	 * @postcondition none
+	 * @postcondition 
+	 * 		this.theGivenSet == theUnsortedSet
+	 * 		this.theSortedSet == theSortedSet
+	 * 		this.theUnionSet == theUnionSet
+	 * 
+	 * 		this.givenSetIterator == this.theGivenSet.iterator();
+	 * 		this.sortedSetIterator == this.theSortedSet.iterator();
+	 * 
+	 * 		this.givenSetElement == this.givenSetIterator.next();
+	 * 		this.sortedSetElement == this.sortedSetIterator.next();
+	 * 
+	 * 		this.givenSetHasNextElement == true;
+	 * 		this.sortedSetHasNextElement == true;
+	 * 
+	 * 		this.valuesUsed == new HashSet<E>();
 	 * 
 	 * @param theUnsortedSet the unsorted set to find the union of
 	 * @param theSortedSet the sorted set to find the union of
 	 */
 	public UnionOperations(Set<E> theUnsortedSet, SortedSet<E> theSortedSet, SortedSet<E> theUnionSet) {
-		this.theUnsortedSet = theUnsortedSet;
+		this.theGivenSet = theUnsortedSet;
 		this.theSortedSet = theSortedSet;
 		this.theUnionSet = theUnionSet;
 		
-		this.unsortedSetIterator = theUnsortedSet.iterator();
-		this.sortedSetIterator = theSortedSet.iterator();
+		this.givenSetIterator = this.theGivenSet.iterator();
+		this.sortedSetIterator = this.theSortedSet.iterator();
 		
-		this.unsortedSetElement = theUnsortedSet.iterator().next();
-		this.sortedSetElement = theSortedSet.getTheSet().iterator().next();
+		this.givenSetElement = this.givenSetIterator.next();
+		this.sortedSetElement = this.sortedSetIterator.next();
 		
-		this.unsortedSetHasNextElement = true;
+		this.givenSetHasNextElement = true;
 		this.sortedSetHasNextElement = true;
 		
 		this.valuesUsed = new HashSet<E>();
 	}
 	
 	/**
-	 * Gets the union for the unsorted set and the sorted set
+	 * Gets the union for the given sorted set and the sorted set
+	 * the time complexity is O(n) given that the two sets are sorted sets
 	 * 
 	 * @precondition none
 	 * @postcondition none
@@ -67,10 +82,11 @@ public class UnionOperations<E extends Comparable<E>> {
 	 * @return this.theUnionSet the union of the unsorted and the sorted sets
 	 */
 	public SortedSet<E> getUnion() {
-		while (this.unsortedSetHasNextElement || this.sortedSetHasNextElement) {
-			if (this.sortedSetElement.compareTo(this.unsortedSetElement) < 0) {
+		while (this.givenSetHasNextElement || this.sortedSetHasNextElement) {
+			System.out.println(this.sortedSetElement + "  " + this.givenSetElement);
+			if (this.sortedSetElement.compareTo(this.givenSetElement) < 0) {
 				this.addToUnionSetIfSortedSetElementIsLessThanUnsortedSetElement();
-			} else if (this.sortedSetElement.compareTo(this.unsortedSetElement) == 0) {
+			} else if (this.sortedSetElement.compareTo(this.givenSetElement) == 0) {
 				this.addToUnionIfSortedSetElementIsEqualToUnsortedElement();
 			} else {
 				this.addToUnionSetIfSortedSetElementIsMoreThanUnsortedSetElement();
@@ -84,48 +100,48 @@ public class UnionOperations<E extends Comparable<E>> {
 		this.addSetElementToValuesUsed(this.theUnionSet, this.sortedSetElement, this.valuesUsed);
 		if (this.sortedSetIterator.hasNext()) {
 			this.sortedSetElement = this.sortedSetIterator.next();
-		} else if (this.unsortedSetIterator.hasNext()) {
-			this.theUnionSet.add(this.unsortedSetElement);
+		} else if (this.givenSetIterator.hasNext()) {
+			this.theUnionSet.add(this.givenSetElement);
 			this.sortedSetHasNextElement = false;
-			this.unsortedSetHasNextElement = false;
+			this.givenSetHasNextElement = false;
 			
-			this.populateSecondSetOnceFirstSetIsIteratedThrough(this.theUnionSet, this.unsortedSetIterator, this.valuesUsed);
+			this.populateSecondSetOnceFirstSetIsIteratedThrough(this.theUnionSet, this.givenSetIterator, this.valuesUsed);
 		} else {
-			this.theUnionSet.add(this.unsortedSetElement);
+			this.theUnionSet.add(this.givenSetElement);
 			this.sortedSetHasNextElement = false;
-			this.unsortedSetHasNextElement = false;
+			this.givenSetHasNextElement = false;
 		}
 	}
 	
 	private void addToUnionIfSortedSetElementIsEqualToUnsortedElement() {
-		this.addSetElementToValuesUsed(this.theUnionSet, this.unsortedSetElement, this.valuesUsed);
+		this.addSetElementToValuesUsed(this.theUnionSet, this.givenSetElement, this.valuesUsed);
 		if (this.sortedSetIterator.hasNext()) {
 			this.sortedSetElement = this.sortedSetIterator.next();
 		} else {
 			this.sortedSetHasNextElement = false;
 		}
-		if (this.unsortedSetIterator.hasNext()) {
-			this.unsortedSetElement = this.unsortedSetIterator.next();
+		if (this.givenSetIterator.hasNext()) {
+			this.givenSetElement = this.givenSetIterator.next();
 		} else {
-			this.unsortedSetHasNextElement = false;
+			this.givenSetHasNextElement = false;
 		}
 	}
 
 	private void addToUnionSetIfSortedSetElementIsMoreThanUnsortedSetElement() {
-		this.addSetElementToValuesUsed(this.theUnionSet, this.unsortedSetElement, this.valuesUsed);
+		this.addSetElementToValuesUsed(this.theUnionSet, this.givenSetElement, this.valuesUsed);
 		
-		if (this.unsortedSetIterator.hasNext()) {
-			this.unsortedSetElement = this.unsortedSetIterator.next();
+		if (this.givenSetIterator.hasNext()) {
+			this.givenSetElement = this.givenSetIterator.next();
 		} else if (this.sortedSetIterator.hasNext()) {
 			this.addSetElementToValuesUsed(this.theUnionSet, this.sortedSetElement, this.valuesUsed);
 			this.sortedSetHasNextElement = false;
-			this.unsortedSetHasNextElement = false;
+			this.givenSetHasNextElement = false;
 			
 			this.populateFirstSetOnceSecondSetIsIteratedThrough(this.theUnionSet, this.sortedSetIterator);
 		} else {
 			this.addSetElementToValuesUsed(this.theUnionSet, this.sortedSetElement, this.valuesUsed);
 			this.sortedSetHasNextElement = false;
-			this.unsortedSetHasNextElement = false;
+			this.givenSetHasNextElement = false;
 		}
 	}
 	

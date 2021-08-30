@@ -108,10 +108,10 @@ class TestUnion {
 		theFirstSortedSet.add("n");
 		theFirstSortedSet.add("o");
 		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
-		theSecondSortedSet.add("p");
 		theSecondSortedSet.add("c");
 		theSecondSortedSet.add("j");
 		theSecondSortedSet.add("l");
+		theSecondSortedSet.add("p");
 		theSecondSortedSet.add("q");
 		theSecondSortedSet.add("r");
 		
@@ -135,7 +135,7 @@ class TestUnion {
 	public void shouldFindUnionForTwoStringsWithManyVeryDifferentItemsWithSetsHavingVariedItemsWithoutDuplicates() {
 		SortedSet<String> theFirstSortedSet = new SortedSet<String>();
 		theFirstSortedSet.add("a");
-		theFirstSortedSet.add("p");
+		theFirstSortedSet.add("b");
 		theFirstSortedSet.add("d");
 		theFirstSortedSet.add("e");
 		theFirstSortedSet.add("i");
@@ -143,17 +143,17 @@ class TestUnion {
 		theFirstSortedSet.add("o");
 		SortedSet<String> theSecondSortedSet = new SortedSet<String>();
 		theFirstSortedSet.add("i");
-		theSecondSortedSet.add("p");
 		theSecondSortedSet.add("c");
 		theSecondSortedSet.add("j");
 		theSecondSortedSet.add("l");
-		theFirstSortedSet.add("a");
-		theSecondSortedSet.add("q");
+		theSecondSortedSet.add("p");
+		theFirstSortedSet.add("q");
 		theSecondSortedSet.add("r");
+		theSecondSortedSet.add("z");
 		
 		Set<String> theUnionSet = theFirstSortedSet.union(theSecondSortedSet);
-		
 		assertEquals("a" + System.lineSeparator()
+			+ "b" + System.lineSeparator()
 			+ "c" + System.lineSeparator()
 			+ "d" + System.lineSeparator()
 			+ "e" + System.lineSeparator()
@@ -164,7 +164,8 @@ class TestUnion {
 			+ "o" + System.lineSeparator()
 			+ "p" + System.lineSeparator()
 			+ "q" + System.lineSeparator()
-			+ "r" + System.lineSeparator(), theUnionSet.toString());
+			+ "r" + System.lineSeparator()
+			+ "z" + System.lineSeparator(), theUnionSet.toString());
 	}
 	
 	@Test

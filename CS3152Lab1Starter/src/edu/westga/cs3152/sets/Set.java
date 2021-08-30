@@ -14,7 +14,6 @@ package edu.westga.cs3152.sets;
  */
 public interface Set<E extends Comparable<E>> extends Iterable<E> {
 	
-	public DLL<E> getTheSet();
 	/**
 	 * Returns the number of elements in this set.
 	 * 
