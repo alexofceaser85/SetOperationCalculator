@@ -3,7 +3,7 @@ package edu.westga.cs3152.errormessages;
 /**
  * Holds the error messages for the sorted set
  * 
- * @author alexd
+ * @author Alex DeCesare
  * @version 30-August-2021
  */
 public final class SortedSetErrorMessages {
