@@ -11,7 +11,7 @@ import edu.westga.cs3152.sets.DLL;
 class TestRemove {
 
 	@Test
-	void test() {
+	void shouldNotRemoveBecauseOperationIsNotSupported() {
 		DLL<String> list = new DLL<String>();
 		assertThrows(UnsupportedOperationException.class, () -> {
 			list.iterator().remove();
