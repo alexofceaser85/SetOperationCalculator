@@ -1,11 +1,39 @@
 package edu.westga.cs3152.sets.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
-import edu.westga.cs3152.sets.*;
+
+import edu.westga.cs3152.errormessages.SortedSetErrorMessages;
+import edu.westga.cs3152.sets.Set;
+import edu.westga.cs3152.sets.SortedSet;
 
 class TestUnion {
+	
+	@Test
+	public void shouldNotFindUnionOfTwoSetsIfInputtedSetIsNull() {
+		SortedSet<String> set = new SortedSet<String>();
+		
+		String message = assertThrows(NullPointerException.class, () -> {
+			set.union(null);
+		}).getMessage();
+		
+		assertEquals(message, SortedSetErrorMessages.CANNOT_FIND_THE_UNION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+	}
+	
+	@Test
+	public void shouldNotFindUnionOfTwoSetsIfInputtedSetIsNotASortedSet() {
+		SortedSet<String> firstSet = new SortedSet<String>();
+		
+		String message = assertThrows(ClassCastException.class, () -> {
+			firstSet.union(new MockSet<String>());
+		}).getMessage();
+		
+		assertEquals(message, SortedSetErrorMessages.CANNOT_FIND_THE_UNION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+	}
 	
 	@Test
 	public void shouldFindUnionForTwoEmptySets() {
@@ -302,6 +330,75 @@ class TestUnion {
 			+ "4" + System.lineSeparator()
 			+ "5" + System.lineSeparator()
 			+ "6" + System.lineSeparator(), theUnionSet.toString());
+	}
+	
+	private class MockSet<E extends Comparable<E>> implements Set<E> {
+
+		@Override
+		public Iterator<E> iterator() {
+			return null;
+		}
+
+		@Override
+		public int size() {
+			return 0;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return false;
+		}
+
+		@Override
+		public boolean equals(Set<E> set) {
+			return false;
+		}
+
+		@Override
+		public boolean isSubsetOf(Set<E> set) {
+			return false;
+		}
+
+		@Override
+		public boolean isProperSubsetOf(Set<E> set) {
+			return false;
+		}
+
+		@Override
+		public boolean isDisjoint(Set<E> set) {
+			return false;
+		}
+
+		@Override
+		public boolean contains(E element) {
+			return false;
+		}
+
+		@Override
+		public boolean add(E element) {
+			return false;
+		}
+
+		@Override
+		public boolean remove(E element) {
+			return false;
+		}
+
+		@Override
+		public Set<E> union(Set<E> set) {
+			return null;
+		}
+
+		@Override
+		public Set<E> intersection(Set<E> set) {
+			return null;
+		}
+
+		@Override
+		public Set<E> difference(Set<E> set) {
+			return null;
+		}
+		
 	}
 
 }

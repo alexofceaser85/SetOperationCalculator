@@ -52,11 +52,12 @@ public class UnionOperations<E extends Comparable<E>> {
 	 * 
 	 * 		this.valuesUsed == new HashSet<E>();
 	 * 
-	 * @param theUnsortedSet the unsorted set to find the union of
+	 * @param givenSet the unsorted set to find the union of
 	 * @param theSortedSet the sorted set to find the union of
+	 * @param theUnionSet the set that contains the union elements of the given set and the sorted set
 	 */
-	public UnionOperations(Set<E> theUnsortedSet, SortedSet<E> theSortedSet, SortedSet<E> theUnionSet) {
-		this.theGivenSet = theUnsortedSet;
+	public UnionOperations(Set<E> givenSet, SortedSet<E> theSortedSet, SortedSet<E> theUnionSet) {
+		this.theGivenSet = givenSet;
 		this.theSortedSet = theSortedSet;
 		this.theUnionSet = theUnionSet;
 		

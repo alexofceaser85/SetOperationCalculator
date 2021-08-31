@@ -2,9 +2,8 @@ package edu.westga.cs3152.sets;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.TreeSet;
 
+import edu.westga.cs3152.errormessages.SortedSetErrorMessages;
 import edu.westga.cs3152.sets.setoperations.UnionOperations;
 
 /**
@@ -18,8 +17,8 @@ import edu.westga.cs3152.sets.setoperations.UnionOperations;
  * time. All other operations guarantee linear time complexity. The iterator
  * returns the elements in sorted order.
  * 
- * @author CS3152
- * @version Fall 2021
+ * @author Alex DeCesare
+ * @version 30-August-2021
  * @param <E> type of set elements
  */
 public class SortedSet<E extends Comparable<E>> implements Set<E> {
@@ -57,7 +56,7 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return this.theUnsortedSet.isEmpty();
+		return this.theUnsortedSet.isEmpty() && this.theSortedSet.isEmpty();
 	}
 	
 	/*
@@ -68,6 +67,13 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean equals(Set<E> aSet) {
+		
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_IF_TWO_SETS_ARE_EQUAL_IF_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_IF_TWO_SETS_ARE_EQUAL_IF_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
 		
 		if (this.checkIfSetSizesAreNotEqual(aSet)) {
 			return false;
@@ -84,6 +90,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isSubsetOf(Set<E> aSet) {
+		
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_A_SUBSET_OF_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_A_SUBSET_OF_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		Set<E> superSet = aSet;
 		HashSet<E> subSet = this.theUnsortedSet;
 		
@@ -102,6 +116,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isProperSubsetOf(Set<E> aSet) {
+		
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_A_PROPER_SUBSET_OF_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_A_PROPER_SUBSET_OF_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		Set<E> superSet = aSet;
 		HashSet<E> subSet = this.theUnsortedSet;
 		
@@ -120,6 +142,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean isDisjoint(Set<E> aSet) {
+		
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_DISJOINT_FROM_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_IF_THE_SET_IS_DISJOINT_FROM_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		Set<E> superSet = aSet;
 		HashSet<E> subSet = this.theUnsortedSet;
 		
@@ -133,6 +163,10 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean contains(E el) {
+		
+		if (el == null) {
+			throw new IllegalArgumentException(SortedSetErrorMessages.CANNOT_FIND_IF_ELEMENT_IS_CONTAINED_IN_THE_SET_IF_THE_ELEMENT_IS_NULL);
+		}
 		return this.theUnsortedSet.contains(el);
 	}
 
@@ -143,6 +177,10 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean add(E el) {
+		if (el == null) {
+			throw new IllegalArgumentException(SortedSetErrorMessages.CANNOT_ADD_AN_ELEMENT_TO_THE_SET_IF_THE_ELEMENT_IS_NULL);
+		}
+		
 		int sortedSetSize = this.theSortedSet.size();
 		if (sortedSetSize == 0) {
 			this.theSortedSet.addFirst(el);
@@ -170,6 +208,10 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public boolean remove(E el) {
+		if (el == null) {
+			throw new IllegalArgumentException(SortedSetErrorMessages.CANNOT_REMOVE_AN_ELEMENT_TO_THE_SET_IF_THE_ELEMENT_IS_NULL);
+		}
+		
 		int sortedSetSize = this.theSortedSet.size();
 		if (sortedSetSize == 0) {
 			return false;
@@ -197,6 +239,14 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> union(Set<E> aSet) {
+		
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_THE_UNION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_THE_UNION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		if (aSet.isEmpty()) {
 			return new SortedSet<E>();
 		}
@@ -214,6 +264,13 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> intersection(Set<E> aSet) {
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_THE_INTERSECTION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_THE_INTERSECTION_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		SortedSet<E> theIntersectionSet = new SortedSet<E>();
 
 		Iterator<E> setIterator = aSet.iterator();
@@ -235,6 +292,13 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 	 */
 	@Override
 	public Set<E> difference(Set<E> aSet) {
+		if (aSet == null) {
+			throw new NullPointerException(SortedSetErrorMessages.CANNOT_FIND_THE_DIFFERENCE_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NULL);
+		}
+		if (!(aSet instanceof SortedSet)) {
+			throw new ClassCastException(SortedSetErrorMessages.CANNOT_FIND_THE_DIFFERENCE_OF_THE_SET_AND_THE_INPUTTED_SET_IF_THE_INPUTTED_SET_IS_NOT_A_SORTED_SET);
+		}
+		
 		SortedSet<E> theDifferenceSet = new SortedSet<E>();
 
 		Iterator<E> setIterator = this.theSortedSet.iterator();
@@ -258,6 +322,15 @@ public class SortedSet<E extends Comparable<E>> implements Set<E> {
 		return this.theSortedSet.iterator();
 	}
 
+	/**
+	 * Returns the string representation of the sorted set
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 * 
+	 * @return theSetString the string representation of the sorted set
+	 */
+	
 	@Override
 	public String toString() {
 		String theSetString = "";

@@ -1,12 +1,13 @@
 package edu.westga.cs3152.sets.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import edu.westga.cs3152.sets.SortedSet;
 
-public class TestMySetConstructor {
+class TestMySetConstructor {
 	@Test
 	public void testNewSetSizeIsZero() {
 		SortedSet<String> aSet = new SortedSet<String>();
